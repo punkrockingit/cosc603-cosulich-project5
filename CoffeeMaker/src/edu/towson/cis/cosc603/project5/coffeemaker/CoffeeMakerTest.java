@@ -23,8 +23,8 @@ public class CoffeeMakerTest extends TestCase {
 		r1.setPrice(55);
 		r1.setAmtCoffee(6);
 		r1.setAmtMilk(1);
-		r1.setAmtSugar(1);
-		r1.setAmtChocolate(0);
+		r1.setAmtSugar(2);
+		r1.setAmtChocolate(1);
 	}
 
 	/**
@@ -61,11 +61,19 @@ public class CoffeeMakerTest extends TestCase {
 	 */
 	@Test
 	public void testaddInventory1(){
-		cm.addInventory(10, 10, 10, 10);
-		assertTrue(cm.checkInventory().getChocolate() == 25 &&
-				cm.checkInventory().getCoffee() == 25 &&
-				cm.checkInventory().getMilk() == 25 &&
-				cm.checkInventory().getSugar() == 25);
+		cm.addInventory(5, 5, 5, 5);
+		assertTrue(cm.checkInventory().getChocolate() == 20 &&
+				cm.checkInventory().getCoffee() == 20 &&
+				cm.checkInventory().getMilk() == 20 &&
+				cm.checkInventory().getSugar() == 20);
+	}
+	
+	/**
+	 * Test adding inventory with zero case
+	 */
+	@Test
+	public void testaddInventory2(){
+		assertTrue(cm.addInventory(0, 0, 0, 0));
 	}
 	
 	/**
@@ -84,7 +92,9 @@ public class CoffeeMakerTest extends TestCase {
 	 */
 	@Test
 	public void testPurchaseBeverage1(){
-		assertEquals(cm.makeCoffee(r1, 100),45);
+		assertEquals(cm.makeCoffee(r1, 100), 45);
+		
+
 	}
 	
 	/**
@@ -92,9 +102,9 @@ public class CoffeeMakerTest extends TestCase {
 	 */
 	@Test
 	public void testPurchaseBeverage2(){
-		cm.makeCoffee(r1, 55);
-		cm.makeCoffee(r1, 55);
-		assertEquals(cm.makeCoffee(r1, 55), 0);
+		cm.makeCoffee(r1, 50);
+		cm.makeCoffee(r1, 50);
+		assertEquals(cm.makeCoffee(r1, 50),50);
 	}
 	
 	/**
@@ -104,4 +114,19 @@ public class CoffeeMakerTest extends TestCase {
 	public void testPurchaseBeverage3(){
 		assertEquals(cm.makeCoffee(r1, 40),40);
 	}
+	/**
+	 * Test recipe for name
+	 */
+	@Test
+	public void testGetRecipeForName() {
+		cm.addRecipe(r1);
+		assertNotNull(r1.toString());
+		assertNotNull(r1.getName());
+		assertSame(r1, cm.getRecipeForName("Coffee"));
+	}
+	
+	public void testGetRecipe() {
+		assertNotNull(cm.getRecipes());
+	}
+	
 }
