@@ -1,5 +1,8 @@
 package edu.towson.cis.cosc603.project5.coffeemaker;
 
+import org.junit.Before;
+import org.junit.Test;
+
 import junit.framework.TestCase;
 
 /**
@@ -10,33 +13,95 @@ public class CoffeeMakerTest extends TestCase {
 	private Inventory i;
 	private Recipe r1;
 
+	@Before
 	public void setUp() {
 		cm = new CoffeeMaker();
 		i = cm.checkInventory();
 
 		r1 = new Recipe();
 		r1.setName("Coffee");
-		r1.setPrice(50);
+		r1.setPrice(55);
 		r1.setAmtCoffee(6);
 		r1.setAmtMilk(1);
 		r1.setAmtSugar(1);
 		r1.setAmtChocolate(0);
 	}
 
+	/**
+	 * Test adding r1
+	 */
+	@Test
 	public void testAddRecipe1() {
 		assertTrue(cm.addRecipe(r1));
 	}
 
+	/**
+	 * Test deleting r1
+	 */
+	@Test
 	public void testDeleteRecipe1() {
 		cm.addRecipe(r1);
 		assertTrue(cm.deleteRecipe(r1));
 	}
 
+	/**
+	 * Test editing r1
+	 */
+	@Test
 	public void testEditRecipe1() {
 		cm.addRecipe(r1);
 		Recipe newRecipe = new Recipe();
 		newRecipe = r1;
 		newRecipe.setAmtSugar(2);
 		assertTrue(cm.editRecipe(r1, newRecipe));
+	}
+	
+	/**
+	 * Test adding inventory
+	 */
+	@Test
+	public void testaddInventory1(){
+		cm.addInventory(10, 10, 10, 10);
+		assertTrue(cm.checkInventory().getChocolate() == 25 &&
+				cm.checkInventory().getCoffee() == 25 &&
+				cm.checkInventory().getMilk() == 25 &&
+				cm.checkInventory().getSugar() == 25);
+	}
+	
+	/**
+	 * Test checking the inventory
+	 */
+	@Test
+	public void testCheckInventory1(){
+		assertTrue(cm.checkInventory().getChocolate() == 15 &&
+				cm.checkInventory().getCoffee() == 15 &&
+				cm.checkInventory().getMilk() == 15 &&
+				cm.checkInventory().getSugar() == 15);
+	}
+	
+	/**
+	 * Test purchasing a beverage successfully
+	 */
+	@Test
+	public void testPurchaseBeverage1(){
+		assertEquals(cm.makeCoffee(r1, 100),45);
+	}
+	
+	/**
+	 * Test purchasing a beverage without enough ingredients
+	 */
+	@Test
+	public void testPurchaseBeverage2(){
+		cm.makeCoffee(r1, 55);
+		cm.makeCoffee(r1, 55);
+		assertEquals(cm.makeCoffee(r1, 55), 0);
+	}
+	
+	/**
+	 * Test purchasing a beverage without enough money
+	 */
+	@Test
+	public void testPurchaseBeverage3(){
+		assertEquals(cm.makeCoffee(r1, 40),40);
 	}
 }
